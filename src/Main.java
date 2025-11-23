@@ -15,125 +15,124 @@ public class Main {
 
         // Задание 1
         // Проверка метода integral
-//        Function exp = new Exp();
-//        double theoretical = Math.E - 1;
-//        double step = 0.0001;
-//        double numeric = Functions.integral(exp, 0, 1, step);
-//        System.out.println("Теоретическое значение: " + theoretical);
-//        System.out.println("Численное значение: " + numeric);
-//        System.out.println("Разность: " + Math.abs(theoretical - numeric));
-//        System.out.println("Шаг: " + step);
+        Function exp = new Exp();
+        double theoretical = Math.E - 1;
+        double step = 0.0001;
+        double numeric = Functions.integral(exp, 0, 1, step);
+        System.out.println("Теоретическое значение: " + theoretical);
+        System.out.println("Численное значение: " + numeric);
+        System.out.println("Разность: " + Math.abs(theoretical - numeric));
+        System.out.println("Шаг: " + step);
 
         // Задание 2 - последовательная версия
-//        System.out.println("\n=== nonThread(): последовательная версия ===");
-//        nonThread();
+        System.out.println("\n=== nonThread(): последовательная версия ===");
+        nonThread();
 
         // Задание 3 - простая многопоточная версия
-        //System.out.println("\n=== simpleThreads(): простая многопоточная версия ===");
-        //simpleThreads();
+        System.out.println("\n=== simpleThreads(): простая многопоточная версия ===");
+        simpleThreads();
 
         // Задание 4 - многопоточная версия с семафорами и interrupt()
         System.out.println("\n=== complicatedThreads():  многопоточная версия с семафорами ===");
         complicatedThreads();
     }
 
-//    public static void nonThread() {
-//        Task task = new Task();
-//
-//        // 100 задач
-//        int tasksCount = 100;
-//        task.setTasksCount(tasksCount);
-//
-//        Random random = new Random();
-//
-//        for (int i = 0; i < task.getTasksCount(); ++i) {
-//
-//            // 1) Основание логарифма a (1, 10), при этом a > 0 и a != 1.
-//            double base = 1 + 9 * random.nextDouble();
-//            if (Math.abs(base - 1) < 1e-6) {
-//                base += 1e-3;
-//            }
-//            Function logFunction = new Log(base);
-//            task.setFunction(logFunction);
-//
-//            // 2) Левая граница (0, 100)
-//            // Для логарифма нужно ОДЗ x > 0, поэтому исключаем 0
-//            double left = 100 * random.nextDouble();
-//            if (left <= 0) {
-//                left = Double.MIN_VALUE; // очень маленькое положительное число
-//            }
-//
-//            // 3) Правая граница (100, 200)
-//            double right = 100 + 100 * random.nextDouble();
-//            if (right <= left) {
-//                right = left + 1;
-//            }
-//
-//            // 4) Шаг дискретизации (0, 1]
-//            double step = random.nextDouble(); // [0, 1)
-//            if (step <= 0)
-//                step = 1;
-//
-//            task.setLeft(left);
-//            task.setRight(right);
-//            task.setStep(step);
-//            int taskNumber = i + 1;
-//
-//            // 5) Вывод
-//            System.out.printf(
-//                    "Задание %3d:%n" + " левая граница = %.5f%n" + " правая граница = %.5f%n" +
-//                            " шаг дискретизации = %.5f%n",
-//                    taskNumber,
-//                    task.getLeft(),
-//                    task.getRight(),
-//                    task.getStep());
-//
-//            // 6) Вычисляем интеграл по методу трапеций
-//            double value = functions.Functions.integral(
-//                    task.getFunction(),
-//                    task.getLeft(),
-//                    task.getRight(),
-//                    task.getStep()
-//            );
-//
-//            // 7) Выводим результат
-//            System.out.printf("Результат %3d:%n" + "  значение интеграла = %.10f%n%n", taskNumber, value);
-//        }
-//    }
+    public static void nonThread() {
+        Task task = new Task();
+
+        // 100 задач
+        int tasksCount = 100;
+        task.setTasksCount(tasksCount);
+
+        Random random = new Random();
+
+        for (int i = 0; i < task.getTasksCount(); ++i) {
+
+            // 1) Основание логарифма a (1, 10), при этом a > 0 и a != 1.
+            double base = 1 + 9 * random.nextDouble();
+            if (Math.abs(base - 1) < 1e-6) {
+                base += 1e-3;
+            }
+            Function logFunction = new Log(base);
+            task.setFunction(logFunction);
+
+            // 2) Левая граница (0, 100)
+            // Для логарифма нужно ОДЗ x > 0, поэтому исключаем 0
+            double left = 100 * random.nextDouble();
+            if (left <= 0) {
+                left = Double.MIN_VALUE; // очень маленькое положительное число
+            }
+
+            // 3) Правая граница (100, 200)
+            double right = 100 + 100 * random.nextDouble();
+            if (right <= left) {
+                right = left + 1;
+            }
+
+            // 4) Шаг дискретизации (0, 1]
+            double step = random.nextDouble(); // [0, 1)
+            if (step <= 0)
+                step = 1;
+
+            task.setLeft(left);
+            task.setRight(right);
+            task.setStep(step);
+            int taskNumber = i + 1;
+
+            // 5) Вывод
+            System.out.printf(
+                    "[NON] task=%3d left=%.5f right=%.5f step=%.5f%n",
+                    taskNumber,
+                    task.getLeft(),
+                    task.getRight(),
+                    task.getStep());
+
+            // 6) Вычисляем интеграл по методу трапеций
+            double value = functions.Functions.integral(
+                    task.getFunction(),
+                    task.getLeft(),
+                    task.getRight(),
+                    task.getStep()
+            );
+
+            // 7) Выводим результат
+            System.out.printf("[NON-RES] task=%3d value=%.10f%n", taskNumber, value);
+        }
+    }
 
     // 3 задание
-//    public static void simpleThreads() {
-//        // 1) Создаем общий объект Task, с которым будут работать оба потока
-//        Task task = new Task();
-//
-//        // 2) Устанавливаем количество задач, обрабатываемых генератором и интегратором
-//        int tasksCount = 100;
-//        task.setTasksCount(tasksCount);
-//
-//        // 3) Создаем объекты SimpleGenerator и SimpleIntegrator на основе Task
-//        SimpleGenerator generator = new SimpleGenerator(task);
-//        SimpleIntegrator integrator = new SimpleIntegrator(task);
-//
-//        // 4) Оборачиваем их в объекты Thread с понятными именами потоков
-//        Thread genThread = new Thread(generator, "SimpleGenerator");
-//        Thread intThread = new Thread(integrator, "SimpleIntegrator");
-//
-//        // 5) Запускаем оба потока методом start
-//        genThread.start();
-//        intThread.start();
-//
-//        try {
-//            // 6) Ждем завершения работы потоков с помощью join
-//            genThread.join();
-//            intThread.join();
-//        } catch (InterruptedException e) {
-//            Thread.currentThread().interrupt();
-//            System.out.println("main: потоки были прерваны");
-//        }
-//
-//        // 7) После завершения выводим в консоль сообщение о завершении simpleThreads
-//        System.out.println("simpleThreads(): оба потока завершили работу");
-//    }
+    public static void simpleThreads() {
+        // 1) Создаем общий объект Task, с которым будут работать оба потока
+        Task task = new Task();
+
+        // 2) Устанавливаем количество задач, обрабатываемых генератором и интегратором
+        int tasksCount = 100;
+        task.setTasksCount(tasksCount);
+
+        // 3) Создаем объекты SimpleGenerator и SimpleIntegrator на основе Task
+        SimpleGenerator generator = new SimpleGenerator(task);
+        SimpleIntegrator integrator = new SimpleIntegrator(task);
+
+        // 4) Оборачиваем их в объекты Thread с понятными именами потоков
+        Thread genThread = new Thread(generator, "SimpleGenerator");
+        Thread intThread = new Thread(integrator, "SimpleIntegrator");
+
+        // 5) Запускаем оба потока методом start
+        genThread.start();
+        intThread.start();
+
+        try {
+            // 6) Ждем завершения работы потоков с помощью join
+            genThread.join();
+            intThread.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            System.out.println("main: потоки были прерваны");
+        }
+
+        // 7) После завершения выводим в консоль сообщение о завершении simpleThreads
+        System.out.println("simpleThreads(): оба потока завершили работу");
+    }
 
             // 4 задание
     public static void complicatedThreads() {

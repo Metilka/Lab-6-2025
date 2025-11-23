@@ -59,8 +59,7 @@ public class Generator extends Thread {
                     task.setRight(right);
                     task.setStep(step);
                     System.out.printf( // Вывод информации
-                            "[GEN] Задание %3d:%n" + " левая граница = %.6f%n" + " правая граница = %.6f%n" +
-                                    " шаг дискретизации = %.6f%n" + " основание log a    = %.6f%n%n",
+                            "[GEN] task=%3d base=%.6f left=%.6f right=%.6f step=%.6f%n",
                             taskNumber, left, right, step, base);
                 } finally {
                     dataReady.release();

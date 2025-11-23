@@ -52,9 +52,7 @@ public class Integrator extends Thread {
                 // Вычисляем интеграл
                 double result = Functions.integral(function, left, right, step);
                 // Выводим результат вычислений
-                System.out.printf("[INT] Задание %3d:%n" + " левая граница = %.6f%n" +
-                                " правая граница = %.6f%n" +
-                                " шаг дискретизации  = %.6f%n" + " значение интеграла = %.6f%n%n",
+                System.out.printf("[INT] task=%3d left=%.6f right=%.6f step=%.6f value=%.10f%n",
                         taskNumber, left, right, step, result);
             }
         } catch (InterruptedException e) {

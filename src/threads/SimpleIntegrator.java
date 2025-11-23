@@ -1,5 +1,4 @@
 package threads;
-
 import functions.Function;
 import functions.Functions;
 
@@ -12,25 +11,34 @@ public class SimpleIntegrator implements Runnable {
             throw new IllegalArgumentException("Task не должен быть null");
         this.task = task;
     }
-
     @Override
     public void run() {
-        for (int i = 0; i < task.getTasksCount(); ++i) { // Выполняем вычисления для указанного количества задач
+        int tasksCount = task.getTasksCount(); // копия количества задач
+        for (int i = 0; i < tasksCount; ++i) { // Выполняем вычисления для указанного количества задач
             int taskNumber = i + 1;
 
-            // Читаем текущие параметры из общей задачи
-            Function f = task.getFunction(); // Может быть null если генератор еще не установил функцию
-            double left = task.getLeft();
-            double right = task.getRight();
-            double step = task.getStep();
-            double value = Functions.integral(f, left, right, step); // Вычисляем интеграл с полученными параметрами
-            // Выводим результат вычисления
+            Function f;
+            double left;
+            double right;
+            double step;
+
+            synchronized (task) {
+                f = task.getFunction();
+                left = task.getLeft();
+                right = task.getRight();
+                step = task.getStep();
+            }
+            // Простая защита от NullPointerException
+            if (f == null) {
+                System.out.printf("[S-INT] task=%3d function=null, интегрирование пропущено%n", taskNumber);
+                continue;
+            }
+            // Вычисляем интеграл с полученными параметрами
+            double value = Functions.integral(f, left, right, step);
+
+            // Вывод результата в одну строку
             System.out.printf(
-                    "[S-INT] Задание %3d:%n" +
-                            "      левая граница      = %.5f%n" +
-                            "      правая граница     = %.5f%n" +
-                            "      шаг дискретизации  = %.5f%n" +
-                            "      значение интеграла = %.10f%n%n",
+                    "[S-INT] task=%3d left=%.5f right=%.5f step=%.5f value=%.10f%n",
                     taskNumber, left, right, step, value
             );
         }

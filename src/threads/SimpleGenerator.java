@@ -18,7 +18,8 @@ public class SimpleGenerator implements Runnable {
 
     @Override
     public void run() {
-        for (int i = 0; i < task.getTasksCount(); ++i) {   // Генерируем указанное количество задач
+        int tasksCount = task.getTasksCount(); // Копия количества задач
+        for (int i = 0; i < tasksCount; ++i) { // Используем локальную переменную
             int taskNumber = i + 1;
 
             double base = 1 + 9 * random.nextDouble();     // Генерируем основание логарифма в диапазоне (1, 10)
@@ -46,15 +47,16 @@ public class SimpleGenerator implements Runnable {
                 step = 1; // Минимальный шаг = 1
 
             // Заполняем общую задачу сгенерированными параметрами
-            task.setFunction(logFunction);
-            task.setLeft(left);
-            task.setRight(right);
-            task.setStep(step);
+            synchronized (task) {
+                task.setFunction(logFunction);
+                task.setLeft(left);
+                task.setRight(right);
+                task.setStep(step);
 
-            // Выводим информацию о сгенерированной задаче
-            System.out.printf("[S-GEN] Задание %3d:%n" + " база логарифма a   = %.5f%n" + " левая граница      = %.5f%n" +
-                            " правая граница     = %.5f%n" + " шаг дискретизации  = %.5f%n%n",
-                    taskNumber, base, left, right, step);
+                // Выводим информацию о сгенерированной задаче
+                System.out.printf("[S-GEN] task=%3d base=%.5f left=%.5f right=%.5f step=%.5f%n",
+                        taskNumber, base, left, right, step);
+            }
         }
     }
 }
